@@ -2,6 +2,7 @@ package crabster.rudakov.requestsmediacontent.utils
 
 import android.graphics.Rect
 import android.view.View
+import android.widget.Toast
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
@@ -51,6 +52,19 @@ fun View.addSystemTopPadding(
             insets
         }
     }
+}
+
+fun View.showToast(message: String, isLong: Boolean = true) {
+    val duration = if (isLong) {
+        Toast.LENGTH_LONG
+    } else {
+        Toast.LENGTH_SHORT
+    }
+    Toast.makeText(
+        context,
+        message,
+        duration
+    ).show()
 }
 
 fun View.doOnApplyWindowInsets(block: (View, insets: WindowInsetsCompat, initialPadding: Rect) -> WindowInsetsCompat) {

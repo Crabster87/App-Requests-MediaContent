@@ -6,19 +6,15 @@ import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.FrameLayout
 import android.widget.ImageView
-import android.widget.TextView
-import android.widget.Toast
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import crabster.rudakov.requestsmediacontent.data.MediaData
 import crabster.rudakov.requestsmediacontent.R
+import crabster.rudakov.requestsmediacontent.data.MediaData
 import crabster.rudakov.requestsmediacontent.utils.BuildConfig
-import crabster.rudakov.requestsmediacontent.utils.DateUtil
 import crabster.rudakov.requestsmediacontent.utils.DiffUtils
+import crabster.rudakov.requestsmediacontent.utils.showToast
 
 class MediaAdapter(
     private val context: Context
@@ -42,7 +38,7 @@ class MediaAdapter(
     override fun onBindViewHolder(h: ViewHolder, position: Int) {
         val m = currentList()[position]
         m.isSelected = false
-        h.checkbox.background = ContextCompat.getDrawable(context, R.drawable.ic_round)
+        h.image.clipToOutline = true
         Glide.with(context)
             .load(m.url)
             .into(h.image)
@@ -50,8 +46,6 @@ class MediaAdapter(
         var isPhoto = true
         if (m.mediaType == MediaStore.Files.FileColumns.MEDIA_TYPE_VIDEO) {
             isPhoto = false
-            h.durationFrame.visibility = View.VISIBLE
-            h.durationLabel.text = DateUtil().millisToTime(m.duration.toLong())
         }
 
         h.itemView.setOnClickListener {
@@ -82,25 +76,7 @@ class MediaAdapter(
                 }
             }
             m.isSelected = !m.isSelected
-            if (m.isSelected) {
-                h.checkbox.background = ContextCompat.getDrawable(context, R.mipmap.ic_launcher)
-            } else {
-                h.checkbox.background = ContextCompat.getDrawable(context, R.drawable.ic_round)
-            }
         }
-    }
-
-    private fun View.showToast(message: String, isLong: Boolean = true) {
-        val duration = if (isLong) {
-            Toast.LENGTH_LONG
-        } else {
-            Toast.LENGTH_SHORT
-        }
-        Toast.makeText(
-            context,
-            message,
-            duration
-        ).show()
     }
 
     override fun getItemCount(): Int {
@@ -117,9 +93,6 @@ class MediaAdapter(
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val image: ImageView = view.findViewById(R.id.image)
-        val durationFrame: FrameLayout = view.findViewById(R.id.durationFrame)
-        val durationLabel: TextView = view.findViewById(R.id.durationLabel)
-        val checkbox: ImageView = view.findViewById(R.id.checkbox)
     }
 
     private val differ = AsyncListDiffer(this, DiffUtils.diffCallback)

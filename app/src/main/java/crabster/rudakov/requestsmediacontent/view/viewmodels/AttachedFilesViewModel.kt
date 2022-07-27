@@ -13,11 +13,11 @@ class AttachedFilesViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
-    lateinit var argument: MediaType
+    lateinit var args: MediaType
         private set
 
     fun submitArgument(@IdRes id: Int) {
-        argument = when (id) {
+        args = when (id) {
             R.id.action_attach_photo -> MediaType.PHOTO
             else -> MediaType.VIDEO
         }

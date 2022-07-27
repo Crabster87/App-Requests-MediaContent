@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import crabster.rudakov.requestsmediacontent.data.MediaData
 import crabster.rudakov.requestsmediacontent.repository.MediaRepository
-import crabster.rudakov.requestsmediacontent.data.MediaType
+import crabster.rudakov.requestsmediacontent.view.fragments.MediaFragmentArgs
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -22,9 +22,12 @@ class MediaViewModel @Inject constructor(
     private var _items: MutableStateFlow<List<MediaData>> = MutableStateFlow(emptyList())
     val items: StateFlow<List<MediaData>> = _items
 
-    fun getMedia(mediaType: MediaType) {
+    private val args = MediaFragmentArgs.fromSavedStateHandle(savedStateHandle)
+    private val type = args.mediaType
+
+    fun getMedia() {
         viewModelScope.launch {
-            mediaRepository.items(mediaType).collectLatest {
+            mediaRepository.items(type).collectLatest {
                 _items.value = it
             }
         }

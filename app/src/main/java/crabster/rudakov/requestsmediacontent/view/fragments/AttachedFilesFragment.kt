@@ -49,7 +49,7 @@ class AttachedFilesFragment : Fragment() {
     override fun onContextItemSelected(item: MenuItem): Boolean {
         attachedFilesViewModel.submitArgument(id = item.itemId)
         val action = AttachedFilesFragmentDirections.actionAttachedFilesFragmentToMediaFragment(
-            attachedFilesViewModel.argument
+            attachedFilesViewModel.args
         )
         findNavController().navigate(action)
         return super.onContextItemSelected(item)

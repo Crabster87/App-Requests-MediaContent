@@ -11,8 +11,8 @@ import androidx.core.content.PermissionChecker
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.GridLayoutManager
+import crabster.rudakov.requestsmediacontent.data.MediaData
 import crabster.rudakov.requestsmediacontent.databinding.FragmentMediaBinding
 import crabster.rudakov.requestsmediacontent.view.MediaAdapter
 import crabster.rudakov.requestsmediacontent.view.viewmodels.MediaViewModel
@@ -26,7 +26,6 @@ class MediaFragment : Fragment() {
     private val binding get() = _binding!!
     private val viewModel: MediaViewModel by viewModels()
     private var mediaAdapter: MediaAdapter? = null
-    private val navArgs by navArgs<MediaFragmentArgs>()
 
     private val permissionManager =
         registerForActivityResult(
@@ -35,7 +34,7 @@ class MediaFragment : Fragment() {
         ) { permissions ->
             val granted = !permissions.entries.any { !it.value }
             if (granted) {
-                viewModel.getMedia(navArgs.mediaType)
+                viewModel.getMedia()
             }
         }
 
@@ -55,8 +54,7 @@ class MediaFragment : Fragment() {
         val lm = GridLayoutManager(view.context, 3)
         lm.isSmoothScrollbarEnabled = false
         lm.initialPrefetchItemCount = 10
-        binding.recycler.layoutManager = lm
-        binding.recycler.apply {
+        binding.rvMedia.apply {
             layoutManager = lm
             itemAnimator = null
             adapter = mediaAdapter
@@ -74,7 +72,7 @@ class MediaFragment : Fragment() {
         if (mediaAdapter?.currentList()?.isEmpty() == true) {
             checkPermissions { permissionManager.launch(it) }
         }
-        viewModel.getMedia(navArgs.mediaType)
+        viewModel.getMedia()
     }
 
     override fun onDestroy() {
@@ -111,5 +109,11 @@ class MediaFragment : Fragment() {
         }
         return result
     }
+
+}
+
+interface MediaListener{
+
+    fun onItemSelected(mediaData: MediaData)
 
 }
