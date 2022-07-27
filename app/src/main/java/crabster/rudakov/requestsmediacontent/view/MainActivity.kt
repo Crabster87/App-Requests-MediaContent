@@ -13,7 +13,6 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         supportActionBar?.hide()
-        supportFragmentManager.beginTransaction().add(com.google.android.material.R.id.container, TestMediaFragment()).commit()
     }
 
 }

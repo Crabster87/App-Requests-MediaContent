@@ -1,4 +1,4 @@
-package crabster.rudakov.requestsmediacontent.view
+package crabster.rudakov.requestsmediacontent.view.fragments
 
 import android.Manifest
 import android.os.Build
@@ -11,19 +11,22 @@ import androidx.core.content.PermissionChecker
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.GridLayoutManager
-import crabster.rudakov.requestsmediacontent.data.MediaType
 import crabster.rudakov.requestsmediacontent.databinding.FragmentMediaBinding
+import crabster.rudakov.requestsmediacontent.view.MediaAdapter
+import crabster.rudakov.requestsmediacontent.view.viewmodels.MediaViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 
 @AndroidEntryPoint
-class TestMediaFragment : Fragment() {
+class MediaFragment : Fragment() {
 
     private var _binding: FragmentMediaBinding? = null
     private val binding get() = _binding!!
     private val viewModel: MediaViewModel by viewModels()
     private var mediaAdapter: MediaAdapter? = null
+    private val navArgs by navArgs<MediaFragmentArgs>()
 
     private val permissionManager =
         registerForActivityResult(
@@ -32,7 +35,7 @@ class TestMediaFragment : Fragment() {
         ) { permissions ->
             val granted = !permissions.entries.any { !it.value }
             if (granted) {
-                viewModel.getMedia(MediaType.PHOTO)
+                viewModel.getMedia(navArgs.mediaType)
             }
         }
 
@@ -71,7 +74,7 @@ class TestMediaFragment : Fragment() {
         if (mediaAdapter?.currentList()?.isEmpty() == true) {
             checkPermissions { permissionManager.launch(it) }
         }
-        viewModel.getMedia(MediaType.PHOTO)
+        viewModel.getMedia(navArgs.mediaType)
     }
 
     override fun onDestroy() {

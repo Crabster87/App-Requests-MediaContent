@@ -1,4 +1,4 @@
-package crabster.rudakov.requestsmediacontent.view
+package crabster.rudakov.requestsmediacontent.view.viewmodels
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
@@ -24,7 +24,7 @@ class MediaViewModel @Inject constructor(
 
     fun getMedia(mediaType: MediaType) {
         viewModelScope.launch {
-            mediaRepository.items(MediaType.PHOTO).collectLatest {
+            mediaRepository.items(mediaType).collectLatest {
                 _items.value = it
             }
         }

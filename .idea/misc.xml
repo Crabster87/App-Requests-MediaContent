@@ -4,10 +4,14 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/iar87/Desktop/Projects/RequestsMediaContent/app/src/main/res/drawable-v24/ic_arrow_back_24dp.xml" value="0.173" />
+        <entry key="..\:/Users/iar87/Desktop/Projects/RequestsMediaContent/app/src/main/res/drawable-v24/ic_attach.xml" value="0.1825" />
+        <entry key="..\:/Users/iar87/Desktop/Projects/RequestsMediaContent/app/src/main/res/drawable-v24/ic_attach_photo.xml" value="0.1825" />
         <entry key="..\:/Users/iar87/Desktop/Projects/RequestsMediaContent/app/src/main/res/drawable-v24/ic_attach_video.xml" value="0.173" />
         <entry key="..\:/Users/iar87/Desktop/Projects/RequestsMediaContent/app/src/main/res/layout/activity_main.xml" value="0.3536458333333333" />
+        <entry key="..\:/Users/iar87/Desktop/Projects/RequestsMediaContent/app/src/main/res/layout/fragment_attached_files.xml" value="0.36770833333333336" />
         <entry key="..\:/Users/iar87/Desktop/Projects/RequestsMediaContent/app/src/main/res/layout/fragment_media.xml" value="0.36770833333333336" />
         <entry key="..\:/Users/iar87/Desktop/Projects/RequestsMediaContent/app/src/main/res/layout/item_media.xml" value="0.36770833333333336" />
+        <entry key="..\:/Users/iar87/Desktop/Projects/RequestsMediaContent/app/src/main/res/menu/fab_menu.xml" value="0.36770833333333336" />
       </map>
     </option>
   </component>
