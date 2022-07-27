@@ -7,8 +7,8 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import crabster.rudakov.requestsmediacontent.R
 import crabster.rudakov.requestsmediacontent.databinding.FragmentAttachedFilesBinding
-import crabster.rudakov.requestsmediacontent.view.viewmodels.AttachedFilesViewModel
 import crabster.rudakov.requestsmediacontent.view.MediaAdapter
+import crabster.rudakov.requestsmediacontent.view.viewmodels.AttachedFilesViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

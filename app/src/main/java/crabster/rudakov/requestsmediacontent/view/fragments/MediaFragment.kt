@@ -50,7 +50,7 @@ class MediaFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        mediaAdapter = MediaAdapter(view.context)
+        mediaAdapter = MediaAdapter()
         val lm = GridLayoutManager(view.context, 3)
         lm.isSmoothScrollbarEnabled = false
         lm.initialPrefetchItemCount = 10
@@ -69,7 +69,7 @@ class MediaFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        if (mediaAdapter?.currentList()?.isEmpty() == true) {
+        if (mediaAdapter?.currentList?.isEmpty() == true) {
             checkPermissions { permissionManager.launch(it) }
         }
         viewModel.getMedia()
