@@ -2,24 +2,19 @@ package crabster.rudakov.requestsmediacontent.view
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import crabster.rudakov.requestsmediacontent.data.MediaData
 import crabster.rudakov.requestsmediacontent.databinding.ItemMediaBinding
+import crabster.rudakov.requestsmediacontent.utils.DiffUtils
 
 class MediaAdapter : RecyclerView.Adapter<MediaAdapter.ViewHolder>() {
 
-    var currentList: List<MediaData> = emptyList()
+    val differ = AsyncListDiffer(this, DiffUtils.diffCallback)
 
     fun submitList(list: List<MediaData>) {
-        if (currentList.isEmpty()) {
-            currentList = list
-            notifyItemRangeInserted(0, currentList.size)
-        } else {
-            notifyItemRangeRemoved(0, currentList.size)
-            currentList = list
-            notifyItemRangeInserted(0, currentList.size)
-        }
+        differ.submitList(list)
     }
 
     inner class ViewHolder(private val binding: ItemMediaBinding) :
@@ -44,9 +39,9 @@ class MediaAdapter : RecyclerView.Adapter<MediaAdapter.ViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(currentList[position])
+        holder.bind(differ.currentList[position])
     }
 
-    override fun getItemCount() = currentList.size
+    override fun getItemCount() = differ.currentList.size
 
 }
