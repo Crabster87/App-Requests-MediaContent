@@ -69,7 +69,7 @@ class MediaFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        if (mediaAdapter?.differ?.currentList?.isEmpty() == true) {
+        if (mediaAdapter?.currentList?.isEmpty() == true) {
             checkPermissions { permissionManager.launch(it) }
         }
         viewModel.getMedia()
