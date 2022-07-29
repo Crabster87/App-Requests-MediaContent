@@ -11,6 +11,7 @@ import androidx.core.content.PermissionChecker
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import crabster.rudakov.requestsmediacontent.data.MediaData
 import crabster.rudakov.requestsmediacontent.databinding.FragmentMediaBinding
@@ -20,7 +21,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 
 @AndroidEntryPoint
-class MediaFragment : Fragment() {
+class MediaFragment : Fragment(), MediaListener {
 
     private var _binding: FragmentMediaBinding? = null
     private val binding get() = _binding!!
@@ -50,7 +51,9 @@ class MediaFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        mediaAdapter = MediaAdapter()
+        mediaAdapter = MediaAdapter {
+            onItemSelected(it)
+        }
         val lm = GridLayoutManager(view.context, 3)
         lm.isSmoothScrollbarEnabled = false
         lm.initialPrefetchItemCount = 10
@@ -110,9 +113,16 @@ class MediaFragment : Fragment() {
         return result
     }
 
+    override fun onItemSelected(mediaData: MediaData) {
+        val action = MediaFragmentDirections.actionMediaFragmentToAttachedFilesFragment(
+            mediaData
+        )
+        findNavController().navigate(action)
+    }
+
 }
 
-interface MediaListener{
+interface MediaListener {
 
     fun onItemSelected(mediaData: MediaData)
 

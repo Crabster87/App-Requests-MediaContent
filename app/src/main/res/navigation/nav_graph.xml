@@ -26,6 +26,11 @@
         <action
             android:id="@+id/action_attachedFilesFragment_to_mediaFragment"
             app:destination="@id/mediaFragment" />
+        <argument
+            android:name="mediaData"
+            android:defaultValue="@null"
+            app:argType="crabster.rudakov.requestsmediacontent.data.MediaData"
+            app:nullable="true" />
     </fragment>
 
 </navigation>

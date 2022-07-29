@@ -9,7 +9,8 @@ import crabster.rudakov.requestsmediacontent.data.MediaData
 import crabster.rudakov.requestsmediacontent.databinding.ItemMediaBinding
 import crabster.rudakov.requestsmediacontent.utils.DiffUtils
 
-class MediaAdapter : ListAdapter<MediaData, MediaAdapter.ViewHolder>(DiffUtils.diffCallback) {
+class MediaAdapter(val function: ((MediaData) -> Unit)? = null) :
+    ListAdapter<MediaData, MediaAdapter.ViewHolder>(DiffUtils.diffCallback) {
 
     private var emptyList = false
 
@@ -34,7 +35,7 @@ class MediaAdapter : ListAdapter<MediaData, MediaAdapter.ViewHolder>(DiffUtils.d
                     .into(image)
             }
             itemView.setOnClickListener {
-
+                function?.invoke(item)
             }
         }
     }
