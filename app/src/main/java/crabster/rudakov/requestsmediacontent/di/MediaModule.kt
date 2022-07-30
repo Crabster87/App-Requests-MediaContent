@@ -1,6 +1,8 @@
 package crabster.rudakov.requestsmediacontent.di
 
 import android.app.Application
+import crabster.rudakov.requestsmediacontent.repository.AttachedFilesRepository
+import crabster.rudakov.requestsmediacontent.repository.AttachedFilesRepositoryImpl
 import crabster.rudakov.requestsmediacontent.repository.MediaRepository
 import crabster.rudakov.requestsmediacontent.repository.MediaRepositoryImpl
 import dagger.Module
@@ -22,6 +24,15 @@ class MediaModule {
         coroutineContext: CoroutineContext
     ): MediaRepository {
         return MediaRepositoryImpl(context, coroutineContext)
+    }
+
+    @Provides
+    @Singleton
+    fun provideRepositoryAttachedFiles(
+        context: Application,
+        coroutineContext: CoroutineContext
+    ): AttachedFilesRepository {
+        return AttachedFilesRepositoryImpl(context, coroutineContext)
     }
 
     @Provides
