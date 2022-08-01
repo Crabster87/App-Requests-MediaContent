@@ -1,6 +1,5 @@
 package crabster.rudakov.requestsmediacontent.repository
 
-import android.app.Application
 import androidx.annotation.IdRes
 import crabster.rudakov.requestsmediacontent.R
 import crabster.rudakov.requestsmediacontent.data.MediaData
@@ -10,7 +9,6 @@ import javax.inject.Inject
 import kotlin.coroutines.CoroutineContext
 
 class AttachedFilesRepositoryImpl @Inject constructor(
-    val context: Application,
     private val ioDispatcher: CoroutineContext
 ) : AttachedFilesRepository {
 

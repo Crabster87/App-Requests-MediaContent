@@ -55,6 +55,12 @@ class AttachedFilesFragment : Fragment() {
         }
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
+        mediaAdapter = null
+    }
+
     override fun onCreateContextMenu(
         menu: ContextMenu,
         v: View,

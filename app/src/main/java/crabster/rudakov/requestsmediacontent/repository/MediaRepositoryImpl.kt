@@ -1,6 +1,6 @@
 package crabster.rudakov.requestsmediacontent.repository
 
-import android.app.Application
+import android.content.ContentResolver
 import android.database.Cursor
 import android.net.Uri
 import android.provider.MediaStore
@@ -15,7 +15,7 @@ import javax.inject.Inject
 import kotlin.coroutines.CoroutineContext
 
 class MediaRepositoryImpl @Inject constructor(
-    val context: Application,
+    private val contentResolver: ContentResolver,
     private val ioDispatcher: CoroutineContext
 ) : MediaRepository {
 
@@ -133,7 +133,7 @@ class MediaRepositoryImpl @Inject constructor(
     }
 
     private fun createCursor(contentUri: Uri, projection: Array<String>): Cursor? {
-        return context.contentResolver.query(
+        return contentResolver.query(
             contentUri,
             projection,
             null,

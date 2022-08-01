@@ -21,11 +21,11 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 
 @AndroidEntryPoint
-class MediaFragment : Fragment(), MediaListener {
+class MediaFragment : Fragment(), MediaChoiceListener {
 
     private var _binding: FragmentMediaBinding? = null
     private val binding get() = _binding!!
-    private val viewModel: MediaViewModel by viewModels()
+    private val mediaViewModel: MediaViewModel by viewModels()
     private var mediaAdapter: MediaAdapter? = null
 
     private val permissionManager =
@@ -35,7 +35,7 @@ class MediaFragment : Fragment(), MediaListener {
         ) { permissions ->
             val granted = !permissions.entries.any { !it.value }
             if (granted) {
-                viewModel.getMedia()
+                mediaViewModel.getMedia()
             }
         }
 
@@ -64,7 +64,7 @@ class MediaFragment : Fragment(), MediaListener {
         }
 
         viewLifecycleOwner.lifecycleScope.launchWhenCreated {
-            viewModel.items.collectLatest {
+            mediaViewModel.items.collectLatest {
                 mediaAdapter?.submitList(it)
             }
         }
@@ -75,7 +75,7 @@ class MediaFragment : Fragment(), MediaListener {
         if (mediaAdapter?.currentList?.isEmpty() == true) {
             checkPermissions { permissionManager.launch(it) }
         }
-        viewModel.getMedia()
+        mediaViewModel.getMedia()
     }
 
     override fun onDestroy() {
@@ -122,7 +122,7 @@ class MediaFragment : Fragment(), MediaListener {
 
 }
 
-interface MediaListener {
+interface MediaChoiceListener {
 
     fun onItemSelected(mediaData: MediaData)
 

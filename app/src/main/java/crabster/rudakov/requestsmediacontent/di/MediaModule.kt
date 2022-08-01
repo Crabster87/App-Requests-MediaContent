@@ -1,6 +1,7 @@
 package crabster.rudakov.requestsmediacontent.di
 
-import android.app.Application
+import android.content.ContentResolver
+import android.content.Context
 import crabster.rudakov.requestsmediacontent.repository.AttachedFilesRepository
 import crabster.rudakov.requestsmediacontent.repository.AttachedFilesRepositoryImpl
 import crabster.rudakov.requestsmediacontent.repository.MediaRepository
@@ -8,6 +9,7 @@ import crabster.rudakov.requestsmediacontent.repository.MediaRepositoryImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import kotlinx.coroutines.Dispatchers
 import javax.inject.Singleton
@@ -20,25 +22,31 @@ class MediaModule {
     @Provides
     @Singleton
     fun provideRepositoryMedia(
-        context: Application,
+        contentResolver: ContentResolver,
         coroutineContext: CoroutineContext
     ): MediaRepository {
-        return MediaRepositoryImpl(context, coroutineContext)
+        return MediaRepositoryImpl(contentResolver, coroutineContext)
     }
 
     @Provides
     @Singleton
     fun provideRepositoryAttachedFiles(
-        context: Application,
         coroutineContext: CoroutineContext
     ): AttachedFilesRepository {
-        return AttachedFilesRepositoryImpl(context, coroutineContext)
+        return AttachedFilesRepositoryImpl(coroutineContext)
     }
 
     @Provides
     @Singleton
     fun provideIoDispatcher(): CoroutineContext {
         return Dispatchers.IO
+    }
+
+    @Provides
+    @Singleton
+    fun provideContentResolver(@ApplicationContext context: Context
+    ): ContentResolver {
+        return context.contentResolver
     }
 
 }
