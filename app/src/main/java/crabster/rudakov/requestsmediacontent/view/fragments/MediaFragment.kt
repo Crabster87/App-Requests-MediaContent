@@ -1,13 +1,9 @@
 package crabster.rudakov.requestsmediacontent.view.fragments
 
-import android.Manifest
-import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.content.PermissionChecker
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.viewModels
@@ -57,17 +53,6 @@ class MediaFragment : DialogFragment() {
     private var mediaDataChoiceListener: MediaDataChoiceListener? = null
     private var args: MediaType? = null
 
-    private val permissionManager =
-        registerForActivityResult(
-            ActivityResultContracts
-                .RequestMultiplePermissions()
-        ) { permissions ->
-            val granted = !permissions.entries.any { !it.value }
-            if (granted) {
-                args?.let { mediaViewModel.getMedia(mediaType = it) }
-            }
-        }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setStyle(STYLE_NO_TITLE, R.style.DialogTheme)
@@ -116,9 +101,6 @@ class MediaFragment : DialogFragment() {
 
     override fun onResume() {
         super.onResume()
-        if (mediaAdapter?.currentList?.isEmpty() == true) {
-            checkPermissions { permissionManager.launch(it) }
-        }
         args?.let { mediaViewModel.getMedia(mediaType = it) }
     }
 
@@ -127,35 +109,6 @@ class MediaFragment : DialogFragment() {
         _binding = null
         mediaAdapter = null
         mediaDataChoiceListener = null
-    }
-
-    private fun checkPermissions(needPermissions: (permissions: Array<String>) -> Unit): Boolean {
-        val permission = if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.Q) {
-            arrayOf(
-                Manifest.permission.CAMERA,
-                Manifest.permission.READ_EXTERNAL_STORAGE,
-                Manifest.permission.ACCESS_COARSE_LOCATION,
-                Manifest.permission.ACCESS_FINE_LOCATION,
-            )
-        } else arrayOf(
-            Manifest.permission.CAMERA,
-            Manifest.permission.READ_EXTERNAL_STORAGE,
-            Manifest.permission.WRITE_EXTERNAL_STORAGE,
-            Manifest.permission.ACCESS_COARSE_LOCATION,
-            Manifest.permission.ACCESS_FINE_LOCATION,
-            Manifest.permission.ACCESS_MEDIA_LOCATION
-        )
-
-        val result = PermissionChecker.checkSelfPermission(
-            requireContext(),
-            permission.toString()
-        ) == PermissionChecker.PERMISSION_GRANTED
-        if (!result) {
-            needPermissions(permission)
-        } else {
-            onStart()
-        }
-        return result
     }
 
     private fun handleOnItemCLick(mediaData: MediaData) {
