@@ -5,9 +5,9 @@ import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import crabster.rudakov.requestsmediacontent.R
+import crabster.rudakov.requestsmediacontent.data.MediaData
 import crabster.rudakov.requestsmediacontent.databinding.FragmentAttachedFilesBinding
 import crabster.rudakov.requestsmediacontent.view.MediaAdapter
 import crabster.rudakov.requestsmediacontent.view.viewmodels.AttachedFilesViewModel
@@ -15,7 +15,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 
 @AndroidEntryPoint
-class AttachedFilesFragment : Fragment() {
+class AttachedFilesFragment : Fragment(), MediaFragment.MediaDataChoiceListener {
 
     private var _binding: FragmentAttachedFilesBinding? = null
     private val binding get() = _binding!!
@@ -72,11 +72,16 @@ class AttachedFilesFragment : Fragment() {
     }
 
     override fun onContextItemSelected(item: MenuItem): Boolean {
-        val action = AttachedFilesFragmentDirections.actionAttachedFilesFragmentToMediaFragment(
-            attachedFilesViewModel.submitArgument(id = item.itemId)
-        )
-        findNavController().navigate(action)
+        attachedFilesViewModel.submitArgument(id = item.itemId)
+        attachedFilesViewModel.args?.let {
+            MediaFragment.newInstance(it)
+            MediaFragment.show(childFragmentManager, it)
+        }
         return super.onContextItemSelected(item)
+    }
+
+    override fun onItemDataSelected(mediaData: MediaData) {
+        attachedFilesViewModel.submitMediaData(mediaData)
     }
 
 }

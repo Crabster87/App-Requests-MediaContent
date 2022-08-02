@@ -3,9 +3,9 @@ package crabster.rudakov.requestsmediacontent.view.viewmodels
 import androidx.annotation.IdRes
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
+import crabster.rudakov.requestsmediacontent.R
 import crabster.rudakov.requestsmediacontent.data.MediaData
-import crabster.rudakov.requestsmediacontent.repository.AttachedFilesRepository
-import crabster.rudakov.requestsmediacontent.view.fragments.AttachedFilesFragmentArgs
+import crabster.rudakov.requestsmediacontent.data.MediaType
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -13,20 +13,24 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AttachedFilesViewModel @Inject constructor(
-    savedStateHandle: SavedStateHandle,
-    private val attachedFilesRepository: AttachedFilesRepository
+    savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
-    private var _items: MutableStateFlow<List<MediaData>> = attachedFilesRepository.items
+    private var _items: MutableStateFlow<List<MediaData>> = MutableStateFlow(emptyList())
     val items: StateFlow<List<MediaData>> = _items
 
-    private val args = AttachedFilesFragmentArgs.fromSavedStateHandle(savedStateHandle)
-    private val mediaData = args.mediaData
+    var args: MediaType? = null
+        private set
 
-    init {
-        _items.value = attachedFilesRepository.items(mediaData)
+    fun submitArgument(@IdRes id: Int) {
+        args = when (id) {
+            R.id.action_attach_photo -> MediaType.PHOTO
+            else -> MediaType.VIDEO
+        }
     }
 
-    fun submitArgument(@IdRes id: Int) = attachedFilesRepository.args(id)
+    fun submitMediaData(mediaData: MediaData) {
+        _items.value = _items.value.plus(mediaData).distinct()
+    }
 
 }

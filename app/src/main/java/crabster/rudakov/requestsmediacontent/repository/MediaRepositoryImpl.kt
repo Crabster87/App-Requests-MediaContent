@@ -5,8 +5,6 @@ import android.database.Cursor
 import android.net.Uri
 import android.provider.MediaStore
 import crabster.rudakov.requestsmediacontent.data.MediaData
-import crabster.rudakov.requestsmediacontent.data.MediaData.Companion.WEEK_MINUTES
-import crabster.rudakov.requestsmediacontent.data.MediaData.Companion.isValidTime
 import crabster.rudakov.requestsmediacontent.data.MediaType
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collectLatest
@@ -53,21 +51,21 @@ class MediaRepositoryImpl @Inject constructor(
                         val id = videoCursor.getString(idColumn)
                         val data = videoCursor.getString(dataColumn)
                         val dateAdded = videoCursor.getString(dateAddedColumn)
-                        val isValidTime =
-                            dateAdded.toLongOrNull()?.times(1000).isValidTime(WEEK_MINUTES)
-                        if (isValidTime) {
-                            val duration = videoCursor.getInt(durationColumn)
-                            val galleryData = MediaData()
-                            galleryData.also {
-                                it.url = data
-                                it.id = Integer.valueOf(id)
-                                it.duration = duration
-                                it.mediaType = MediaStore.Files.FileColumns.MEDIA_TYPE_VIDEO
-                                it.dateAdded = dateAdded
-                                it.dateTimeOriginal = dateAdded.toLongOrNull()?.times(1000)
-                            }
-                            emit(galleryData)
+//                        val isValidTime =
+//                            dateAdded.toLongOrNull()?.times(1000).isValidTime(WEEK_MINUTES)
+//                        if (isValidTime) {
+                        val duration = videoCursor.getInt(durationColumn)
+                        val galleryData = MediaData()
+                        galleryData.also {
+                            it.url = data
+                            it.id = Integer.valueOf(id)
+                            it.duration = duration
+                            it.mediaType = MediaStore.Files.FileColumns.MEDIA_TYPE_VIDEO
+                            it.dateAdded = dateAdded
+                            it.dateTimeOriginal = dateAdded.toLongOrNull()?.times(1000)
                         }
+                        emit(galleryData)
+//                        }
                     } while (videoCursor.moveToNext())
                 }
                 videoCursor.close()
@@ -91,24 +89,24 @@ class MediaRepositoryImpl @Inject constructor(
                         val id = imagesCursor.getString(idColumn)
                         val data = imagesCursor.getString(dataColumn)
                         val dateAdded = imagesCursor.getString(dateAddedColumn)
-                        val isValidTime =
-                            dateAdded.toLongOrNull()?.times(1000).isValidTime(WEEK_MINUTES)
-                        if (isValidTime) {
-                            val galleryData = MediaData()
+//                        val isValidTime =
+//                            dateAdded.toLongOrNull()?.times(1000).isValidTime(WEEK_MINUTES)
+//                        if (isValidTime) {
+                        val galleryData = MediaData()
 //                        val exif = PhotoHelper.extractExif(data)
-                            galleryData.also {
+                        galleryData.also {
 //                            it.hasGeoTag = exif.hasGeoTag
-                                it.dateTimeOriginal = dateAdded.toLongOrNull()?.times(1000)
+                            it.dateTimeOriginal = dateAdded.toLongOrNull()?.times(1000)
 //                            it.isScreenShot = exif.isScreenShot
-                                it.url = data
-                                it.id = Integer.valueOf(id)
-                                it.mediaType = MediaStore.Files.FileColumns.MEDIA_TYPE_IMAGE
-                                it.dateAdded = dateAdded
+                            it.url = data
+                            it.id = Integer.valueOf(id)
+                            it.mediaType = MediaStore.Files.FileColumns.MEDIA_TYPE_IMAGE
+                            it.dateAdded = dateAdded
 //                            it.latitude = exif.latitude
 //                            it.longitude = exif.longitude
-                            }
-                            emit(galleryData)
                         }
+                        emit(galleryData)
+//                        }
                     } while (imagesCursor.moveToNext())
                 }
                 imagesCursor.close()
