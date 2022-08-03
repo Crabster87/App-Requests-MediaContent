@@ -1,6 +1,8 @@
 package crabster.rudakov.requestsmediacontent.view
 
+import android.provider.MediaStore
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -37,7 +39,12 @@ class MediaAdapter(val function: ((MediaData) -> Unit)? = null) :
             itemView.setOnClickListener {
                 function?.invoke(item)
             }
+            if (item.mediaType == MediaStore.Files.FileColumns.MEDIA_TYPE_VIDEO) {
+                binding.imageVideo.visibility = View.VISIBLE
+                binding.videoDuration.visibility = View.VISIBLE
+            }
         }
+
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {

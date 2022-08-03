@@ -8,6 +8,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import crabster.rudakov.requestsmediacontent.R
 import crabster.rudakov.requestsmediacontent.data.MediaData
+import crabster.rudakov.requestsmediacontent.data.MediaType
 import crabster.rudakov.requestsmediacontent.databinding.FragmentAttachedFilesBinding
 import crabster.rudakov.requestsmediacontent.view.MediaAdapter
 import crabster.rudakov.requestsmediacontent.view.viewmodels.AttachedFilesViewModel
@@ -67,21 +68,25 @@ class AttachedFilesFragment : Fragment(), MediaFragment.MediaDataChoiceListener 
         menuInfo: ContextMenu.ContextMenuInfo?
     ) {
         super.onCreateContextMenu(menu, v, menuInfo)
-        val inflater: MenuInflater = activity!!.menuInflater
-        inflater.inflate(R.menu.fab_menu, menu)
+        activity?.menuInflater?.apply { inflate(R.menu.fab_menu, menu) }
     }
 
+
     override fun onContextItemSelected(item: MenuItem): Boolean {
-        attachedFilesViewModel.submitArgument(id = item.itemId)
-        attachedFilesViewModel.args?.let {
-            MediaFragment.newInstance(it)
-            MediaFragment.show(childFragmentManager, it)
+        val mediaType = when (item.itemId) {
+            R.id.action_attach_photo -> MediaType.PHOTO
+            else -> MediaType.VIDEO
         }
+        launchMediaFragment(mediaType)
         return super.onContextItemSelected(item)
     }
 
     override fun onItemDataSelected(mediaData: MediaData) {
         attachedFilesViewModel.submitMediaData(mediaData)
+    }
+
+    private fun launchMediaFragment(mediaType: MediaType) {
+        MediaFragment.show(childFragmentManager, mediaType)
     }
 
 }
