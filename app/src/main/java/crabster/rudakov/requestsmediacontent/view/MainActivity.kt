@@ -7,7 +7,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.PermissionChecker
 import crabster.rudakov.requestsmediacontent.R
-import crabster.rudakov.requestsmediacontent.view.fragments.AttachedFilesFragment
+import crabster.rudakov.requestsmediacontent.view.fragment.AttachedFilesFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
