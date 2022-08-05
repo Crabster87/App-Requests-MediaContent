@@ -7,13 +7,13 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import crabster.rudakov.requestsmediacontent.R
-import ru.rusatom.dev.digital.water.media.data.dto.MediaData
-import ru.rusatom.dev.digital.water.media.data.dto.MediaType
 import crabster.rudakov.requestsmediacontent.databinding.FragmentAttachedFilesBinding
-import ru.rusatom.dev.digital.water.media.view.MediaAdapter
 import crabster.rudakov.requestsmediacontent.view.viewmodel.AttachedFilesViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
+import ru.rusatom.dev.digital.water.media.data.dto.MediaData
+import ru.rusatom.dev.digital.water.media.data.dto.MediaType
+import ru.rusatom.dev.digital.water.media.view.MediaAdapter
 import ru.rusatom.dev.digital.water.media.view.MediaFragment
 
 @AndroidEntryPoint
@@ -76,7 +76,8 @@ class AttachedFilesFragment : Fragment(), MediaFragment.MediaDataChoiceListener 
     override fun onContextItemSelected(item: MenuItem): Boolean {
         val mediaType = when (item.itemId) {
             R.id.action_attach_photo -> MediaType.PHOTO
-            else -> MediaType.VIDEO
+            R.id.action_attach_video -> MediaType.VIDEO
+            else -> null
         }
         launchMediaFragment(mediaType)
         return super.onContextItemSelected(item)
@@ -86,7 +87,7 @@ class AttachedFilesFragment : Fragment(), MediaFragment.MediaDataChoiceListener 
         attachedFilesViewModel.submitMediaData(mediaData)
     }
 
-    private fun launchMediaFragment(mediaType: MediaType) {
+    private fun launchMediaFragment(mediaType: MediaType?) {
         MediaFragment.show(childFragmentManager, mediaType)
     }
 

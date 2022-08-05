@@ -9,4 +9,8 @@
         android:id="@+id/action_attach_video"
         android:icon="@drawable/ic_attach_video"
         android:title="Прикрепить видео" />
+
+    <item
+        android:id="@+id/action_attach_all"
+        android:title="Прикрепить все" />
 </menu>

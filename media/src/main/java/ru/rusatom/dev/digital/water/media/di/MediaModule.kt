@@ -1,15 +1,13 @@
 package ru.rusatom.dev.digital.water.media.di
 
-import android.content.ContentResolver
-import android.content.Context
-import ru.rusatom.dev.digital.water.media.repository.MediaRepository
-import ru.rusatom.dev.digital.water.media.data.repository.MediaRepositoryImpl
+import android.app.Application
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import kotlinx.coroutines.Dispatchers
+import ru.rusatom.dev.digital.water.media.data.repository.MediaRepositoryImpl
+import ru.rusatom.dev.digital.water.media.repository.MediaRepository
 import javax.inject.Singleton
 import kotlin.coroutines.CoroutineContext
 
@@ -20,11 +18,11 @@ class MediaModule {
     @Provides
     @Singleton
     fun provideRepositoryMedia(
-        contentResolver: ContentResolver,
+        application: Application,
         coroutineContext: CoroutineContext
     ): MediaRepository {
         return MediaRepositoryImpl(
-            contentResolver,
+            application,
             coroutineContext
         )
     }
@@ -33,14 +31,6 @@ class MediaModule {
     @Singleton
     fun provideIoDispatcher(): CoroutineContext {
         return Dispatchers.IO
-    }
-
-    @Provides
-    @Singleton
-    fun provideContentResolver(
-        @ApplicationContext context: Context
-    ): ContentResolver {
-        return context.contentResolver
     }
 
 }

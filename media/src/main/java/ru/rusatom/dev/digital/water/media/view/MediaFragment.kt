@@ -27,7 +27,7 @@ class MediaFragment : DialogFragment() {
         private const val TAG = "DIALOG_MEDIA_TAG"
         private const val ARGS = "MEDIA_TYPE"
 
-        fun newInstance(mediaType: MediaType) =
+        private fun newInstance(mediaType: MediaType?) =
             MediaFragment().apply {
                 arguments = Bundle().apply {
                     putParcelable(ARGS, mediaType)
@@ -36,7 +36,7 @@ class MediaFragment : DialogFragment() {
 
         fun show(
             manager: FragmentManager,
-            args: MediaType
+            args: MediaType?
         ) {
             if (manager.findFragmentByTag(TAG) == null) {
                 newInstance(args).show(manager, TAG)
@@ -99,7 +99,7 @@ class MediaFragment : DialogFragment() {
 
     override fun onResume() {
         super.onResume()
-        args?.let { mediaViewModel.getMedia(mediaType = it) }
+        mediaViewModel.getMedia(mediaType = args)
     }
 
     override fun onDestroy() {

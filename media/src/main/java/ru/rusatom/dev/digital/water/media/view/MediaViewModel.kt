@@ -22,10 +22,16 @@ class MediaViewModel @Inject constructor(
     private var _items: MutableStateFlow<List<MediaData>> = MutableStateFlow(emptyList())
     val items: StateFlow<List<MediaData>> = _items
 
-    fun getMedia(mediaType: MediaType) {
+    fun getMedia(mediaType: MediaType?) {
         viewModelScope.launch {
-            mediaRepository.items(mediaType).collectLatest {
-                _items.value = it
+            mediaRepository.items().collectLatest { list ->
+                when (mediaType) {
+                    MediaType.PHOTO -> _items.value =
+                        list.filter { it.mediaType == MediaType.PHOTO }
+                    MediaType.VIDEO -> _items.value =
+                        list.filter { it.mediaType == MediaType.VIDEO }
+                    null -> _items.value = list
+                }
             }
         }
     }
